@@ -6,6 +6,8 @@ from dataclasses import dataclass
 
 from src.exception import CustomException
 from src.logger import logging
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
 
 
 # Configuration class for Data Ingestion
@@ -54,7 +56,13 @@ if __name__ == '__main__':
     obj = DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()
 
-    # Make sure DataTransformation is imported and implemented
     from src.components.data_transformation import DataTransformation
     data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+
+    # ✅ Don't ignore preprocessor_path. Capture it.
+    train_arr, test_arr, preprocessor_path = data_transformation.initiate_data_transformation(train_data, test_data)
+
+    modeltrainer = ModelTrainer()
+    # ✅ Pass all three arguments here
+    print(modeltrainer.initiate_model_trainer(train_arr, test_arr, preprocessor_path))
+
